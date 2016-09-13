@@ -81,7 +81,7 @@ func main() {
 	fmt.Fprintln(osStdout, "Tags:")
 	for index, value := range tags {
 		fmt.Fprintf(osStdout, "%v : %v", index, value)
-	//}
+	}
 
 }
 
