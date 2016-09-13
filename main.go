@@ -80,7 +80,7 @@ func main() {
 	//tags := processTags(tagdata)
 	//var tags map[string]interface{}
 	for _, data := range tagdata {
-		fmt.Fprintf(osStdout, "%v\n",data)
+		fmt.Fprintf(osStdout, "%v\n",data["tags"])
 		//tags = data["tags"]
 	}
 
