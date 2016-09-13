@@ -54,6 +54,9 @@ func main() {
 	var instanceHref []string
 	// Create our RightLink10 client
 	client, err := cm15.NewRL10()
+	if err != nil {
+		fail("Failed to Create a client %v\n", err.Error())
+	}
 	if err := client.CanAuthenticate(); err != nil {
 		fail("Unable to create connection to agent: %s", err)
 	}
