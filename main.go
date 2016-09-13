@@ -73,14 +73,16 @@ func main() {
 	// create a Locator for by_resource
 	tagLocator := client.TagLocator("/api/tags/by_resource")
 	// ByResource function expects an array of strings
-	tags, err := tagLocator.ByResource(instanceHref)
+	tagdata, err := tagLocator.ByResource(instanceHref)
 	if err != nil {
 		fail("Failed to retrieve TAGS Instance: %v\n", err.Error())
 	}
 
 	fmt.Fprintln(osStdout, "Tags:")
-	for _, value := range tags {
-		fmt.Fprintf(osStdout, "%v : %v\n", value)
+	for _, data := range tagdata {
+		for key, value := range data {
+			fmt.Fprintf(osStdout, "%v : %v\n", key, value)
+		}
 	}
 
 }
