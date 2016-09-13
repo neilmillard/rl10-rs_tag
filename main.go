@@ -71,7 +71,7 @@ func main() {
 	// extract the HREF (api url) for this instance
 	instanceHref := []string{getHref(instanceEntry)}
 	// create a Locator for by_resource
-	tagLocator := client.TagLocator("/api/tags/byresource")
+	tagLocator := client.TagLocator("/api/tags/by_resource")
 	// ByResource function expects an array of strings
 	tags, err := tagLocator.ByResource(instanceHref)
 	if err != nil {
