@@ -66,7 +66,7 @@ func main() {
 	if err != nil {
 		fail("Failed to retrieve session Instance: %v\n", err.Error())
 	} else {
-		fmt.Fprintln(osStdout, "Instance: %s", instanceEntry.Name)
+		fmt.Fprintf(osStdout, "Instance: %s", instanceEntry.Name)
 	}
 	// extract the HREF (api url) for this instance
 	instanceHref := []string{getHref(instanceEntry)}
@@ -79,9 +79,10 @@ func main() {
 	}
 
 	fmt.Fprintln(osStdout, "Tags:")
-	for tagsEntry := range tags {
-		fmt.Fprintln(osStdout, "%s",tagsEntry)
-	}
+	tagsEntry := tags
+	//for tagsEntry := range tags {
+		fmt.Fprintf(osStdout, "%v", tagsEntry)
+	//}
 
 }
 
