@@ -45,6 +45,7 @@ import (
 	"strings"
 
 	"github.com/rightscale/rsc/cm15"
+	"go/types"
 )
 
 // for testing
@@ -77,7 +78,11 @@ func main() {
 	if err != nil {
 		fail("Failed to retrieve TAGS Instance: %v\n", err.Error())
 	}
-	tags := processTags(tagdata)
+	//tags := processTags(tagdata)
+	var tags []map[string]interface{}
+	for _, data := range tagdata {
+		tags = data["tags"]
+	}
 
 	fmt.Fprintln(osStdout, "Tags:")
 	for key, value := range tags {
@@ -85,20 +90,6 @@ func main() {
 	}
 
 
-}
-
-func processTags(tagData []map[string]interface{}) []map[string]interface{} {
-	// we are expecting a map with a map containing a tags key
-	for _, data := range tagData {
-		for key, value := range data {
-			if key == "tags" {
-				// return the tags if we found the matching key
-				return value
-			}
-		}
-	}
-	// return empty map if nothing there
-	return
 }
 
 // Get the href of an audit entry from the Links attribute by inspecting the self link
