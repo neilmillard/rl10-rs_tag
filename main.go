@@ -82,27 +82,7 @@ func main() {
 	tags := tagdata[0]["tags"]
 	for _,value := range tags.([]interface{}) {
 		fmt.Fprintf(osStdout, "%v\n",value)
-
 	}
-
-	//for _, data := range tagdata {
-	//	for mapkey,mapvalue := range data { //data is a map which contains an array of maps
-	//		if mapkey == "tags" {
-	//			for _,value := range mapvalue.([]interface{}) {
-	//				fmt.Fprintf(osStdout, "%v\n",value)
-	//
-	//			}
-	//		}
-	//
-	//	}
-	//}
-
-	//fmt.Fprintln(osStdout, "Tags:")
-	//for key, value := range tags {
-	//	fmt.Fprintf(osStdout, "%v : %v\n", key, value)
-	//}
-
-
 }
 
 // Get the href of an audit entry from the Links attribute by inspecting the self link
