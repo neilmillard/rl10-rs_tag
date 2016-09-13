@@ -83,7 +83,7 @@ func main() {
 		for mapkey,mapvalue := range data { //data is a map which contains an array of maps
 			if mapkey == "tags" {
 				fmt.Fprintf(osStdout, "%v = %v\n",mapkey,mapvalue)
-				for key,value := range mapvalue.([]map[string]interface{}) {
+				for key,value := range mapvalue.([]interface{}) {
 					fmt.Fprintf(osStdout, "%v = %v\n",key,value)
 				}
 			}
