@@ -79,14 +79,14 @@ func main() {
 		fail("Failed to retrieve TAGS Instance: %v\n", err.Error())
 	}
 	//tags := processTags(tagdata)
-	var tags []map[string]interface{}
+	var tags map[string]interface{}
 	for _, data := range tagdata {
-		tags = make([]map[string]interface{},16)
-		tags["tags"] = data["tags"]
+		tags = make(map[string]interface{},16)
+		tags = data["tags"]
 	}
 
 	fmt.Fprintln(osStdout, "Tags:")
-	for key, value := range tags["tags"] {
+	for key, value := range tags {
 		fmt.Fprintf(osStdout, "%v : %v\n", key, value)
 	}
 
