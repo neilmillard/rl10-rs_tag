@@ -79,22 +79,23 @@ func main() {
 	}
 	//tags := processTags(tagdata)
 	//tags := make(map[string]interface{})
-	for _, data := range tagdata {
-		for mapkey,mapvalue := range data { //data is a map which contains an array of maps
-			if mapkey == "tags" {
-				fmt.Fprintf(osStdout, "%v = %v\n",mapkey,mapvalue)
-				for _,value := range mapvalue.([]interface{}) {
-					fmt.Fprintf(osStdout, "%v\n",value)
-					unmapped := value.(map[string]interface{})
-					fmt.Fprintf(osStdout, "%v\n",unmapped)
-				}
-			}
+	tags := tagdata[0]["tags"]
+	for _,value := range tags.([]interface{}) {
+		fmt.Fprintf(osStdout, "%v\n",value)
 
-		}
-
-
-	//	tags = data["tags"]
 	}
+
+	//for _, data := range tagdata {
+	//	for mapkey,mapvalue := range data { //data is a map which contains an array of maps
+	//		if mapkey == "tags" {
+	//			for _,value := range mapvalue.([]interface{}) {
+	//				fmt.Fprintf(osStdout, "%v\n",value)
+	//
+	//			}
+	//		}
+	//
+	//	}
+	//}
 
 	//fmt.Fprintln(osStdout, "Tags:")
 	//for key, value := range tags {
