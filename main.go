@@ -80,9 +80,16 @@ func main() {
 	//tags := processTags(tagdata)
 	//tags := make(map[string]interface{})
 	for _, data := range tagdata {
-		for key,value := range data {
-			fmt.Fprintf(osStdout, "%v = %v\n",key,value)
+		for mapkey,mapvalue := range data { //data is a map which contains an array of maps
+			if mapkey == "tags" {
+				fmt.Fprintf(osStdout, "%v = %v\n",mapkey,mapvalue)
+				for key,value := range mapvalue.([]map[string]interface{}) {
+					fmt.Fprintf(osStdout, "%v = %v\n",key,value)
+				}
+			}
+
 		}
+
 
 	//	tags = data["tags"]
 	}
