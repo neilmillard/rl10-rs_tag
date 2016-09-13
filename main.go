@@ -51,7 +51,6 @@ import (
 var osStdout io.Writer = os.Stdout
 
 func main() {
-	var instanceHref []string
 	// Create our RightLink10 client
 	client, err := cm15.NewRL10()
 	if err != nil {
@@ -70,7 +69,7 @@ func main() {
 		fmt.Fprintln(osStdout, "Instance: %s", instanceEntry.Name)
 	}
 	// extract the HREF (api url) for this instance
-	instanceHref[1] = getHref(instanceEntry)
+	instanceHref := []string{getHref(instanceEntry)}
 	// create a Locator for by_resource
 	tagLocator := client.TagLocator("/api/tags")
 	// ByResource function expects an array of strings
