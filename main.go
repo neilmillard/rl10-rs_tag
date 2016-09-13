@@ -70,7 +70,7 @@ func main() {
 		fmt.Fprintln(osStdout, "Instance: %s", instanceEntry.Name)
 	}
 	// extract the HREF (api url) for this instance
-	instanceHref[0] = getHref(instanceEntry)
+	instanceHref[1] = getHref(instanceEntry)
 	// create a Locator for by_resource
 	tagLocator := client.TagLocator("/api/tags")
 	// ByResource function expects an array of strings
