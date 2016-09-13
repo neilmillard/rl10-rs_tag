@@ -45,7 +45,6 @@ import (
 	"strings"
 
 	"github.com/rightscale/rsc/cm15"
-	"archive/tar"
 )
 
 // for testing
@@ -99,7 +98,7 @@ func processTags(tagData []map[string]interface{}) []map[string]interface{} {
 		}
 	}
 	// return empty map if nothing there
-	return []map[string]interface{}{""}
+	return
 }
 
 // Get the href of an audit entry from the Links attribute by inspecting the self link
