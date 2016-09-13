@@ -79,9 +79,8 @@ func main() {
 	}
 
 	fmt.Fprintln(osStdout, "Tags:")
-	tagsEntry := tags
-	//for tagsEntry := range tags {
-		fmt.Fprintf(osStdout, "%v", tagsEntry)
+	for index, value := range tags {
+		fmt.Fprintf(osStdout, "%v : %v", index, value)
 	//}
 
 }
