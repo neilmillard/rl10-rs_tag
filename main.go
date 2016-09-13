@@ -55,13 +55,13 @@ func main() {
 	// Create our RightLink10 client
 	client, err := cm15.NewRL10()
 	if err != nil {
-		fail("Failed to Create a client %v\n", err.Error())
+		fail("Failed to Create a client: %v\n", err.Error())
 	}
 	if err := client.CanAuthenticate(); err != nil {
 		fail("Unable to create connection to agent: %s", err)
 	}
 	// get the session for our RL10 reverse proxy connection
-	sessionLocator := client.SessionLocator("sessions/instance")
+	sessionLocator := client.SessionLocator("/api/sessions/instance")
 	// get our instance attached to the session (should be the calling instance i.e. this server)
 	instanceEntry, err := sessionLocator.IndexInstanceSession()
 	if err != nil {
