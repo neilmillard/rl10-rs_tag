@@ -85,6 +85,8 @@ func main() {
 				fmt.Fprintf(osStdout, "%v = %v\n",mapkey,mapvalue)
 				for key,value := range mapvalue.([]interface{}) {
 					fmt.Fprintf(osStdout, "%v = %v\n",key,value)
+					k,v := value.(map[string]interface{})
+					fmt.Fprintf(osStdout, "%s : $s",k,v)
 				}
 			}
 
