@@ -1,4 +1,4 @@
-
+// from https://www.reddit.com/r/golang/comments/1le4px/how_to_cast_interface_to_mapstringstring/
 package main
 
 import (
