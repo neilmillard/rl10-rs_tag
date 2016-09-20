@@ -85,7 +85,7 @@ func main() {
 		for k,v := range value.(map[string]interface{}) {
 			fmt.Printf("tag's k type: %T\ntag key: %v\n", k,k)
 			fmt.Printf("tag's v type: %T\ntag value: %v\n", v,v)
-			keys = append(keys,v)
+			keys = append(keys,v.(string))
 		}
 	}
 	for tagentry := range keys {
