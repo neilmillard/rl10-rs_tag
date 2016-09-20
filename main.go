@@ -16,22 +16,14 @@
 //     rs_tag --remove a_tag
 //     rs_tag -r a_tag
 //
-//   Retrieve instances with any of the tags in a set each tag is a separate argument:
-//     rs_tag --query "a_tag" "b:machine=tag" "c_tag with space"
-//     rs_tag -q "a_tag" "b:machine=tag" "c_tag with space"
-//
 // === Usage
-//    rs_tag (--list, -l | --add, -a TAG | --remove, -r TAG | --query, -q TAG[s])
+//    rs_tag (--list, -l | --add, -a TAG | --remove, -r TAG)
 //
 //    Options:
 //      --list, -l           List current server tags
 //      --add, -a TAG        Add tag named TAG
 //      --remove, -r TAG     Remove tag named TAG
-//      --query, -q TAG[s]   Query for instances that have any of the TAG[s]
-//                           with TAG being quoted if it contains spaces in it's value
-//      --die, -e            Exit with error if query/list fails
 //      --format, -f FMT     Output format: json, yaml, text
-//      --verbose, -v        Display debug information
 //      --help:              Display help
 //      --version:           Display version information
 //      --timeout, -t SEC    Custom timeout (default 180 sec)
@@ -43,6 +35,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"encoding/json"
 
 	"github.com/rightscale/rsc/cm15"
 )
@@ -51,6 +44,7 @@ import (
 var osStdout io.Writer = os.Stdout
 
 func main() {
+	verbose := false
 	// Create our RightLink10 client
 	client, err := cm15.NewRL10()
 	if err != nil {
@@ -66,7 +60,9 @@ func main() {
 	if err != nil {
 		fail("Failed to retrieve session Instance: %v\n", err.Error())
 	} else {
-		fmt.Fprintf(osStdout, "Instance: %s\n", instanceEntry.Name)
+		if verbose {
+			fmt.Fprintf(osStdout, "Instance: %s\n", instanceEntry.Name)
+		}
 	}
 	// extract the HREF (api url) for this instance
 	instanceHref := []string{getHref(instanceEntry)}
@@ -78,9 +74,16 @@ func main() {
 		fail("Failed to retrieve TAGS Instance: %v\n", err.Error())
 	}
 	keys := processTags(tagData)
-	for tagentry := range keys {
-		fmt.Fprintf(osStdout, "%v\n",keys[tagentry])
-	}
+
+	// text output
+	fmt.Fprintf(osStdout, "%v\n",keys)
+	//for tagentry := range keys {
+	//	fmt.Fprintf(osStdout, "%v\n",keys[tagentry])
+	//}
+
+	// json output
+	fmt.Println(string(json.Marshal(keys)))
+
 }
 
 func processTags(tagData []map[string]interface{}) []string  {
