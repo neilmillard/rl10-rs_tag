@@ -59,7 +59,7 @@ func main() {
 	kingpin.Version("0.0.1")
 	kingpin.Parse()
 	// check we have something to do
-	action := string("")
+	action := ""
 	if tagRem != nil {
 		action = "remove"
 	} else if tagAdd != nil {
@@ -67,7 +67,7 @@ func main() {
 	} else if list != nil {
 		action = "list"
 	} else {
-		return errors.New("Missing argument, rs_tag --help for additional information")
+		kingpin.Fatalf("Missing argument, rs_tag --help for additional information")
 	}
 
 	// Create our RightLink10 client
@@ -85,7 +85,7 @@ func main() {
 	if err != nil {
 		fail("Failed to retrieve session Instance: %v\n", err.Error())
 	} else {
-		if verbose {
+		if *verbose {
 			fmt.Fprintf(osStdout, "Instance: %s\n", instanceEntry.Name)
 		}
 	}
