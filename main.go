@@ -59,11 +59,11 @@ func main() {
 	kingpin.Parse()
 	// check we have something to do
 	action := string("")
-	if *tagRem != nil {
+	if len(*tagRem) > 0 {
 		action = "remove"
-	} else if *tagAdd != nil {
+	} else if len(*tagAdd) > 0 {
 		action = "add"
-	} else if *list != nil {
+	} else if len(*list) > 0 {
 		action = "list"
 	} else {
 		fail("Missing argument, rs_tag --help for additional information")
