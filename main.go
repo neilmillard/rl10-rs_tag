@@ -82,7 +82,7 @@ func main() {
 	tags := tagdata[0]["tags"].([]interface{})
 	for _,value := range tags {
 		fmt.Printf("tag's type: %T\n", value)
-		fmt.Fprintf(osStdout, "%v\n",value.(string))
+		fmt.Fprintf(osStdout, "%v\n",value.(map[string]interface{}))
 	}
 }
 
