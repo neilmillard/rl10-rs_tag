@@ -48,9 +48,9 @@ var (
 	verbose  = kingpin.Flag("verbose", "Display debug information").Short('v').Bool()
 	format   = kingpin.Flag("format", "Output format: json, text").Short('f').String()
 	list     = kingpin.Flag("list", "List current server tags").Short('l').Bool()
-	tagAdd   = kingpin.Flag("add","Add tag named TAG").Short('a').PlaceHolder("add TAG").String()
-	tagRem   = kingpin.Flag("remove","Remove tag named TAG").Short('r').PlaceHolder("remove TAG").String()
-	keys     []string
+	tagAdd   = kingpin.Flag("add","Add tag named TAG").Short('a').PlaceHolder("TAG").String()
+	tagRem   = kingpin.Flag("remove","Remove tag named TAG").Short('r').PlaceHolder("TAG").String()
+	Keys     []string
 )
 
 func main() {
@@ -91,6 +91,9 @@ func main() {
 	// extract the HREF (api url) for this instance
 	instanceHref := []string{getHref(instanceEntry)}
 	// everything setup, lets see what we need to do.
+	if *verbose {
+		fmt.Fprintf(osStdout, "Action: %v\n",action)
+	}
 	switch action {
 	case "remove":
 
@@ -104,15 +107,19 @@ func main() {
 		if err != nil {
 			fail("Failed to retrieve TAGS Instance: %v\n", err.Error())
 		}
-		keys = processTags(tagData)
+		Keys = processTags(tagData)
 	}
 
+	if *verbose {
+		fmt.Fprintf(osStdout, "Output: %v\n",*format)
+		fmt.Fprintf(osStdout, "No Keys: %v\n",len(Keys))
+	}
 	switch *format {
 	case "json":
-		outputJson(keys)
+		outputJson(Keys)
 
 	default:
-		outputText(keys)
+		outputText(Keys)
 	}
 
 }
