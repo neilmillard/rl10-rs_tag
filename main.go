@@ -133,7 +133,7 @@ func outputText(keys []string) {
 
 // json output
 func outputJson(keys []string) {
-	tags, _ := json.Marshal(keys)
+	tags, _ := json.MarshalIndent(keys,"","  ")
 	fmt.Println(string(tags))
 }
 
