@@ -76,10 +76,9 @@ func main() {
 	keys := processTags(tagData)
 
 	// text output
-	fmt.Fprintf(osStdout, "%v\n",keys)
-	//for tagentry := range keys {
-	//	fmt.Fprintf(osStdout, "%v\n",keys[tagentry])
-	//}
+	for tagentry := range keys {
+		fmt.Fprintf(osStdout, "%v\n",keys[tagentry])
+	}
 
 	// json output
 	fmt.Println(string(json.Marshal(keys)))
