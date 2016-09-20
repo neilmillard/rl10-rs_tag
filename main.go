@@ -73,23 +73,27 @@ func main() {
 	// create a Locator for by_resource
 	tagLocator := client.TagLocator("/api/tags/by_resource")
 	// ByResource function expects an array of strings
-	tagdata, err := tagLocator.ByResource(instanceHref)
+	tagData, err := tagLocator.ByResource(instanceHref)
 	if err != nil {
 		fail("Failed to retrieve TAGS Instance: %v\n", err.Error())
 	}
-	//tags := processTags(tagdata)
-	tags := tagdata[0]["tags"].([]interface{})
+	keys := processTags(tagData)
+	for tagentry := range keys {
+		fmt.Fprintf(osStdout, "%v\n",keys[tagentry])
+	}
+}
+
+func processTags(tagData []map[string]interface{}) []string  {
+
+	tags := tagData[0]["tags"].([]interface{})
 	keys := make([]string, 0, len(tags))
 	for _,value := range tags {
 		for _,v := range value.(map[string]interface{}) {
 			keys = append(keys,v.(string))
 		}
 	}
-	for tagentry := range keys {
-		fmt.Fprintf(osStdout, "%v\n",keys[tagentry])
-	}
+	return keys
 }
-
 // Get the href of an audit entry from the Links attribute by inspecting the self link
 func getHref(instance *cm15.Instance) string {
 	var href string
