@@ -115,11 +115,11 @@ func main() {
 		fmt.Fprintf(osStdout, "No Keys: %v\n",len(Keys))
 	}
 	switch *format {
-	case "json":
-		outputJson(Keys)
+	case "text":
+		outputText(Keys)
 
 	default:
-		outputText(Keys)
+		outputJson(Keys)
 	}
 
 }
