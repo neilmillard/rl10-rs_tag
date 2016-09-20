@@ -63,7 +63,7 @@ func main() {
 		action = "remove"
 	} else if len(*tagAdd) > 0 {
 		action = "add"
-	} else if len(*list) > 0 {
+	} else if *list {
 		action = "list"
 	} else {
 		fail("Missing argument, rs_tag --help for additional information")
