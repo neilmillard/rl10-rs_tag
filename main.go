@@ -81,7 +81,8 @@ func main() {
 	}
 
 	// json output
-	fmt.Println(string(json.Marshal(keys)))
+	tags, _ := json.Marshal(keys)
+	fmt.Println(string(tags))
 
 }
 
