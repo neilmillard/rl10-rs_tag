@@ -24,6 +24,7 @@
 //      --add, -a TAG        Add tag named TAG
 //      --remove, -r TAG     Remove tag named TAG
 //      --format, -f FMT     Output format: json, yaml, text
+//	--verbose, -v        Display debug information
 //      --help:              Display help
 //      --version:           Display version information
 //      --timeout, -t SEC    Custom timeout (default 180 sec)
@@ -38,17 +39,41 @@ import (
 	"encoding/json"
 
 	"github.com/rightscale/rsc/cm15"
+	"gopkg.in/alecthomas/kingpin.v2"
+	"errors"
 )
 
 // for testing
-var osStdout io.Writer = os.Stdout
+var (
+	osStdout io.Writer = os.Stdout
+	verbose  = kingpin.Flag("verbose", "Display debug information").Short('v').Bool()
+	format   = kingpin.Flag("format", "Output format: json, text").Short('f').String()
+	list     = kingpin.Flag("list", "List current server tags").Short('l').Bool()
+	tagAdd   = kingpin.Flag("add","Add tag named TAG").Short('a').String()
+	tagRem   = kingpin.Flag("remove","Remove tag named TAG").Short('r').String()
+	keys     []string
+)
 
 func main() {
-	verbose := false
+
+	kingpin.Version("0.0.1")
+	kingpin.Parse()
+	// check we have something to do
+	action := string("")
+	if tagRem != nil {
+		action = "remove"
+	} else if tagAdd != nil {
+		action = "add"
+	} else if list != nil {
+		action = "list"
+	} else {
+		return errors.New("Missing argument, rs_tag --help for additional information")
+	}
+
 	// Create our RightLink10 client
 	client, err := cm15.NewRL10()
 	if err != nil {
-		fail("Failed to Create a client: %v\n", err.Error())
+		fail("Failed to Create a client: %v\nTry elevating privilege (sudo/runas) before invoking this command.", err.Error())
 	}
 	if err := client.CanAuthenticate(); err != nil {
 		fail("Unable to create connection to agent: %s", err)
@@ -66,19 +91,30 @@ func main() {
 	}
 	// extract the HREF (api url) for this instance
 	instanceHref := []string{getHref(instanceEntry)}
-	// create a Locator for by_resource
-	tagLocator := client.TagLocator("/api/tags/by_resource")
-	// ByResource function expects an array of strings
-	tagData, err := tagLocator.ByResource(instanceHref)
-	if err != nil {
-		fail("Failed to retrieve TAGS Instance: %v\n", err.Error())
+	// everything setup, lets see what we need to do.
+	switch action {
+	case "remove":
+
+	case "add":
+
+	case "list":
+		// create a Locator for by_resource
+		tagLocator := client.TagLocator("/api/tags/by_resource")
+		// ByResource function expects an array of strings
+		tagData, err := tagLocator.ByResource(instanceHref)
+		if err != nil {
+			fail("Failed to retrieve TAGS Instance: %v\n", err.Error())
+		}
+		keys = processTags(tagData)
 	}
-	keys := processTags(tagData)
 
-	outputText(keys)
+	switch format {
+	case "json":
+		outputJson(keys)
 
-	outputJson(keys)
-
+	default:
+		outputText(keys)
+	}
 
 }
 
