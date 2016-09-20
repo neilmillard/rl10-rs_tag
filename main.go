@@ -48,8 +48,8 @@ var (
 	verbose  = kingpin.Flag("verbose", "Display debug information").Short('v').Bool()
 	format   = kingpin.Flag("format", "Output format: json, text").Short('f').String()
 	list     = kingpin.Flag("list", "List current server tags").Short('l').Bool()
-	tagAdd   = kingpin.Flag("add","Add tag named TAG").Short('a').String()
-	tagRem   = kingpin.Flag("remove","Remove tag named TAG").Short('r').String()
+	tagAdd   = kingpin.Flag("add","Add tag named TAG").Short('a').PlaceHolder("add TAG").String()
+	tagRem   = kingpin.Flag("remove","Remove tag named TAG").Short('r').PlaceHolder("remove TAG").String()
 	keys     []string
 )
 
@@ -66,7 +66,7 @@ func main() {
 	} else if list != nil {
 		action = "list"
 	} else {
-		kingpin.Fatalf("Missing argument, rs_tag --help for additional information")
+		fail("Missing argument, rs_tag --help for additional information")
 	}
 
 	// Create our RightLink10 client
