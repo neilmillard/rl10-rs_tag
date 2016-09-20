@@ -75,17 +75,28 @@ func main() {
 	}
 	keys := processTags(tagData)
 
-	// text output
-	for tagentry := range keys {
-		fmt.Fprintf(osStdout, "%v\n",keys[tagentry])
-	}
+	outputText(keys)
 
-	// json output
-	tags, _ := json.Marshal(keys)
-	fmt.Println(string(tags))
+	outputJson(keys)
+
 
 }
 
+// text output,
+func outputText(keys []string) {
+	for tagentry := range keys {
+		fmt.Fprintf(osStdout, "%v\n",keys[tagentry])
+	}
+}
+
+// json output
+func outputJson(keys []string) {
+	tags, _ := json.Marshal(keys)
+	fmt.Println(string(tags))
+}
+
+// processTags
+// expects output from "github.com/rightscale/rsc/cm15" - tagLocator.ByResource
 func processTags(tagData []map[string]interface{}) []string  {
 
 	tags := tagData[0]["tags"].([]interface{})
