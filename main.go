@@ -40,7 +40,6 @@ import (
 
 	"github.com/rightscale/rsc/cm15"
 	"gopkg.in/alecthomas/kingpin.v2"
-	"errors"
 )
 
 // for testing
@@ -59,7 +58,7 @@ func main() {
 	kingpin.Version("0.0.1")
 	kingpin.Parse()
 	// check we have something to do
-	action := ""
+	action := string("")
 	if tagRem != nil {
 		action = "remove"
 	} else if tagAdd != nil {
@@ -108,7 +107,7 @@ func main() {
 		keys = processTags(tagData)
 	}
 
-	switch format {
+	switch *format {
 	case "json":
 		outputJson(keys)
 
