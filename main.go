@@ -81,7 +81,7 @@ func main() {
 	//tags := make(map[string]interface{})
 	tags := tagdata[0]["tags"]
 	for _,value := range tags.([]interface{}) {
-		fmt.Fprintf(osStdout, "%v\n",value)
+		fmt.Fprintf(osStdout, "%v\n",value.(string))
 	}
 }
 
