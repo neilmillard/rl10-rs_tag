@@ -79,8 +79,9 @@ func main() {
 	}
 	//tags := processTags(tagdata)
 	//tags := make(map[string]interface{})
-	tags := tagdata[0]["tags"]
-	for _,value := range tags.([]interface{}) {
+	tags := tagdata[0]["tags"].(map[string]interface{})
+	for _,value := range tags {
+		fmt.Printf("tag's type: %T\n", value)
 		fmt.Fprintf(osStdout, "%v\n",value.(string))
 	}
 }
