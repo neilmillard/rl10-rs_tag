@@ -20,6 +20,8 @@ setup env
 ---------
 uses best practices [docs](https://golang.org/doc/code.html#Organization)
 
+    # install git (required for go get)
+    sudo yum -y install git
     # set a working directory for our go project
     export GOPATH=$HOME/work
     # create project folder 

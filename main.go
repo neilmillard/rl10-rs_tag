@@ -48,8 +48,9 @@ var (
 	verbose  = kingpin.Flag("verbose", "Display debug information").Short('v').Bool()
 	format   = kingpin.Flag("format", "Output format: json, text").Short('f').String()
 	list     = kingpin.Flag("list", "List current server tags").Short('l').Bool()
-	tagAdd   = kingpin.Flag("add","Add tag named TAG").Short('a').PlaceHolder("TAG").String()
-	tagRem   = kingpin.Flag("remove","Remove tag named TAG").Short('r').PlaceHolder("TAG").String()
+	tagAdd   = kingpin.Flag("add","Add tag named TAG").Short('a').PlaceHolder("TAG").Bool()
+	tagRem   = kingpin.Flag("remove","Remove tag named TAG").Short('r').PlaceHolder("TAG").Bool()
+	tag	 = kingpin.Arg("TAG","TAG to be added or removed").String()
 	Keys     []string
 )
 
@@ -59,9 +60,9 @@ func main() {
 	kingpin.Parse()
 	// check we have something to do
 	action := string("")
-	if len(*tagRem) > 0 {
+	if *tagRem {
 		action = "remove"
-	} else if len(*tagAdd) > 0 {
+	} else if *tagAdd {
 		action = "add"
 	} else if *list {
 		action = "list"
@@ -98,7 +99,10 @@ func main() {
 	case "remove":
 
 	case "add":
-		tags := []string{*tagAdd}
+		// > rs_tag --add "id:cluster_member_id=1"
+		// Successfully added tag id:cluster_member_id=1
+
+		tags := []string{*tag}
 		// create a Locator for multi_add
 		tagLocator := client.TagLocator("/api/tags/multi_add")
 		// Multi_add function expects an array of strings
