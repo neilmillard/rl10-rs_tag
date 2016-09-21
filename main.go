@@ -62,8 +62,10 @@ func main() {
 	action := string("")
 	if *tagRem {
 		action = "remove"
+		checkTag(*tag)
 	} else if *tagAdd {
 		action = "add"
+		checkTag(*tag)
 	} else if *list {
 		action = "list"
 	} else {
@@ -97,11 +99,17 @@ func main() {
 	}
 	switch action {
 	case "remove":
+		tags := []string{*tag}
+		// create a Locator for multi_delete
+		tagLocator := client.TagLocator("/api/tags/multi_delete")
+		// Multi_add function expects an array of strings
+		err := tagLocator.MultiDelete(instanceHref,tags)
+		if err != nil {
+			fail("Failed to remove TAGS from Instance: %v\n", err.Error())
+		}
+		fmt.Fprintf(osStdout, "Successfully removed tag %s\n",*tag)
 
 	case "add":
-		// > rs_tag --add "id:cluster_member_id=1"
-		// Successfully added tag id:cluster_member_id=1
-
 		tags := []string{*tag}
 		// create a Locator for multi_add
 		tagLocator := client.TagLocator("/api/tags/multi_add")
@@ -110,7 +118,7 @@ func main() {
 		if err != nil {
 			fail("Failed to add TAGS to Instance: %v\n", err.Error())
 		}
-		fmt.Fprintf(osStdout, "Successfully added tag %s\n",*tagAdd)
+		fmt.Fprintf(osStdout, "Successfully added tag %s\n",*tag)
 
 	case "list":
 		// create a Locator for by_resource
@@ -136,6 +144,13 @@ func main() {
 			outputJson(Keys)
 		}
 	}
+}
+
+func checkTag(tag *string) {
+	if len(*tag) < 3 {
+		fail("Add tag failed: No tags supplied")
+	}
+	return
 }
 
 // text output,
