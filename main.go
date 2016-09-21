@@ -1,7 +1,6 @@
 // rs_tag
 // written in go (c) Millard Technical Services Ltd
-//   Tagger allows listing, adding and removing tags on the current instance and
-//   querying for instances with a given set of tags
+//   Tagger allows listing, adding and removing tags on the current instance
 //
 // === Examples:
 //   Retrieve all tags:
@@ -56,7 +55,8 @@ var (
 
 func main() {
 
-	kingpin.Version("0.0.1")
+	kingpin.UsageTemplate(kingpin.CompactUsageTemplate).Version("0.1").Author("Neil Millard")
+	kingpin.CommandLine.Help = "  Rightscale(tm) tagger (rs_tag)\n  Tagger allows listing, adding and removing tags on the current instance\n  This version written for RL10\n"
 	kingpin.Parse()
 	// check we have something to do
 	action := string("")
