@@ -56,7 +56,22 @@ var (
 func main() {
 
 	kingpin.UsageTemplate(kingpin.CompactUsageTemplate).Version("0.1").Author("Neil Millard")
-	kingpin.CommandLine.Help = "  Rightscale(tm) tagger (rs_tag)\n  Tagger allows listing, adding and removing tags on the current instance\n  This version written for RL10\n"
+	kingpin.CommandLine.Help = `  Rightscale(tm) tagger (rs_tag)
+	  Tagger allows listing, adding and removing tags on the current instance
+	  This version written for RL10
+   === Examples:
+   Retrieve all tags:
+     rs_tag --list
+     rs_tag -l
+
+   Add tag 'a_tag' to instance:
+     rs_tag --add a_tag
+     rs_tag -a a_tag
+
+   Remove tag 'a_tag':
+     rs_tag --remove a_tag
+     rs_tag -r a_tag
+     `
 	kingpin.Parse()
 	// check we have something to do
 	action := string("")
