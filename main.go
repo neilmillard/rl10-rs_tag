@@ -1,7 +1,6 @@
 // rs_tag
 // written in go (c) Millard Technical Services Ltd
-//   Tagger allows listing, adding and removing tags on the current instance and
-//   querying for instances with a given set of tags
+//   Tagger allows listing, adding and removing tags on the current instance
 //
 // === Examples:
 //   Retrieve all tags:
@@ -48,21 +47,40 @@ var (
 	verbose  = kingpin.Flag("verbose", "Display debug information").Short('v').Bool()
 	format   = kingpin.Flag("format", "Output format: json, text").Short('f').String()
 	list     = kingpin.Flag("list", "List current server tags").Short('l').Bool()
-	tagAdd   = kingpin.Flag("add","Add tag named TAG").Short('a').PlaceHolder("TAG").String()
-	tagRem   = kingpin.Flag("remove","Remove tag named TAG").Short('r').PlaceHolder("TAG").String()
+	tagAdd   = kingpin.Flag("add","Add tag named TAG").Short('a').PlaceHolder("TAG").Bool()
+	tagRem   = kingpin.Flag("remove","Remove tag named TAG").Short('r').PlaceHolder("TAG").Bool()
+	tag	 = kingpin.Arg("TAG","TAG to be added or removed").String()
 	Keys     []string
 )
 
 func main() {
 
-	kingpin.Version("0.0.1")
+	kingpin.UsageTemplate(kingpin.CompactUsageTemplate).Version("0.1").Author("Neil Millard")
+	kingpin.CommandLine.Help = `  Rightscale(tm) tagger (rs_tag)
+	  Tagger allows listing, adding and removing tags on the current instance
+	  This version written for RL10
+   === Examples:
+   Retrieve all tags:
+     rs_tag --list
+     rs_tag -l
+
+   Add tag 'a_tag' to instance:
+     rs_tag --add a_tag
+     rs_tag -a a_tag
+
+   Remove tag 'a_tag':
+     rs_tag --remove a_tag
+     rs_tag -r a_tag
+     `
 	kingpin.Parse()
 	// check we have something to do
 	action := string("")
-	if len(*tagRem) > 0 {
+	if *tagRem {
 		action = "remove"
-	} else if len(*tagAdd) > 0 {
+		checkTag(tag)
+	} else if *tagAdd {
 		action = "add"
+		checkTag(tag)
 	} else if *list {
 		action = "list"
 	} else {
@@ -96,8 +114,26 @@ func main() {
 	}
 	switch action {
 	case "remove":
+		tags := []string{*tag}
+		// create a Locator for multi_delete
+		tagLocator := client.TagLocator("/api/tags/multi_delete")
+		// Multi_add function expects an array of strings
+		err := tagLocator.MultiDelete(instanceHref,tags)
+		if err != nil {
+			fail("Failed to remove TAGS from Instance: %v\n", err.Error())
+		}
+		fmt.Fprintf(osStdout, "Successfully removed tag %s\n",*tag)
 
 	case "add":
+		tags := []string{*tag}
+		// create a Locator for multi_add
+		tagLocator := client.TagLocator("/api/tags/multi_add")
+		// Multi_add function expects an array of strings
+		err := tagLocator.MultiAdd(instanceHref,tags)
+		if err != nil {
+			fail("Failed to add TAGS to Instance: %v\n", err.Error())
+		}
+		fmt.Fprintf(osStdout, "Successfully added tag %s\n",*tag)
 
 	case "list":
 		// create a Locator for by_resource
@@ -114,14 +150,22 @@ func main() {
 		fmt.Fprintf(osStdout, "Output: %v\n",*format)
 		fmt.Fprintf(osStdout, "No Keys: %v\n",len(Keys))
 	}
-	switch *format {
-	case "text":
-		outputText(Keys)
+	if len(Keys) > 0 {
+		switch *format {
+		case "text":
+			outputText(Keys)
 
-	default:
-		outputJson(Keys)
+		default:
+			outputJson(Keys)
+		}
 	}
+}
 
+func checkTag(tag *string) {
+	if len(*tag) < 3 {
+		fail("Add tag failed: No tags supplied")
+	}
+	return
 }
 
 // text output,
