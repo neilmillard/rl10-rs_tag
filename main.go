@@ -40,7 +40,6 @@ import (
 
 	"github.com/rightscale/rsc/cm15"
 	"gopkg.in/alecthomas/kingpin.v2"
-	"archive/tar"
 )
 
 // for testing
@@ -108,7 +107,7 @@ func main() {
 			fail("Failed to add TAGS to Instance: %v\n", err.Error())
 		}
 		fmt.Fprintf(osStdout, "Successfully added tag %s\n",*tagAdd)
-		
+
 	case "list":
 		// create a Locator for by_resource
 		tagLocator := client.TagLocator("/api/tags/by_resource")
