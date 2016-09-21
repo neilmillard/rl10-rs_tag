@@ -62,10 +62,10 @@ func main() {
 	action := string("")
 	if *tagRem {
 		action = "remove"
-		checkTag(*tag)
+		checkTag(tag)
 	} else if *tagAdd {
 		action = "add"
-		checkTag(*tag)
+		checkTag(tag)
 	} else if *list {
 		action = "list"
 	} else {
